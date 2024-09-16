@@ -29,6 +29,7 @@ This project was created using `bun init` in bun v1.1.27. [Bun](https://bun.sh) 
 - Bun
 - Elysia
 - PostgreSQL
+- Drizzle ORM
 
 ## Contributing
 
