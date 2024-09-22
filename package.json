@@ -21,7 +21,6 @@
 	},
 	"dependencies": {
 		"@paralleldrive/cuid2": "^2.2.2",
-		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.33.0",
 		"elysia": "^1.1.12",
 		"postgres": "^3.4.4",
