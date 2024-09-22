@@ -8,11 +8,13 @@
 		"start": "NODE_ENV=production bun dist/http/server.ts",
 		"test": "bun test",
 		"generate": "drizzle-kit generate",
+		"studio": "drizzle-kit studio",
 		"migrate": "bun src/db/migrate.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.1",
 		"@types/bun": "latest",
+		"chalk": "^5.3.0",
 		"drizzle-kit": "^0.24.2",
 		"pg": "^8.13.0"
 	},
