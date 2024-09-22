@@ -15,6 +15,20 @@
       "when": 1726456788471,
       "tag": "0001_amazing_iron_lad",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1726797251157,
+      "tag": "0002_foamy_ghost_rider",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1727015282360,
+      "tag": "0003_sharp_white_tiger",
+      "breakpoints": true
     }
   ]
 }
