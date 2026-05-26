@@ -4,6 +4,6 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=dokcer
-      - POSTGRES_PASSWORD=dokcer
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=pizzashop
