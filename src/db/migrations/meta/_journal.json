@@ -8,6 +8,13 @@
       "when": 1779759631982,
       "tag": "0000_harsh_invaders",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779760260617,
+      "tag": "0001_loose_scalphunter",
+      "breakpoints": true
     }
   ]
 }
