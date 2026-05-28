@@ -7,6 +7,8 @@ const envSchema = z.object({
     .default("development"),
   PORT: z.coerce.number().optional().default(3333),
   DATABASE_URL: z.url(),
+  API_BASE_URL: z.url(),
+  AUTH_REDIRECT_URL: z.url(),
 });
 
 const _env = envSchema.safeParse(process.env);
