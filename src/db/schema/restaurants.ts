@@ -2,6 +2,8 @@ import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "./user";
+import { orders } from "./orders";
+import { products } from "./products";
 
 export const restaurants = pgTable("restaurants", {
   id: text("id")
@@ -19,9 +21,11 @@ export const restaurants = pgTable("restaurants", {
     .notNull(),
 });
 
-export const restaurantsRelations = relations(restaurants, ({ one }) => ({
+export const restaurantsRelations = relations(restaurants, ({ one, many }) => ({
   manager: one(users, {
     fields: [restaurants.managerdId],
     references: [users.id],
   }),
+  orders: many(orders),
+  products: many(products),
 }));
