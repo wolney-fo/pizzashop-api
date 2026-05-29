@@ -2,6 +2,7 @@ import jwt from "@elysia/jwt";
 import Elysia from "elysia";
 import { z } from "zod";
 import { env } from "../env";
+import { UnauthorizedError } from "./errors/unauthorized-error";
 
 const jwtPayloadSchema = z.object({
   sub: z.string(),
@@ -9,6 +10,16 @@ const jwtPayloadSchema = z.object({
 });
 
 export const auth = new Elysia()
+  .error({
+    UNAUTHORZED: UnauthorizedError,
+  })
+  .onError(({ error, code, set }) => {
+    switch (code) {
+      case "UNAUTHORZED":
+        set.status = 401;
+        return { code, message: error.message };
+    }
+  })
   .use(
     jwt({
       secret: env.JWT_SECRET_KEY,
@@ -36,7 +47,7 @@ export const auth = new Elysia()
         const payload = await jwt.verify(auth.value as string);
 
         if (!payload) {
-          throw new Error("Unauthorized");
+          throw new UnauthorizedError();
         }
 
         return {
