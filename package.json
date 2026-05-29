@@ -16,6 +16,7 @@
   "devDependencies": {
     "@faker-js/faker": "^10.4.0",
     "@types/bun": "latest",
+    "@types/nodemailer": "^8.0.0",
     "@types/pg": "^8.20.0",
     "drizzle-kit": "^0.31.10",
     "tsx": "^4.22.3"
@@ -29,6 +30,7 @@
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "elysia": "^1.4.28",
+    "nodemailer": "^8.0.9",
     "pg": "^8.21.0",
     "zod": "^4.4.3"
   }

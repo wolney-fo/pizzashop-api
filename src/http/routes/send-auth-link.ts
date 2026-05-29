@@ -4,6 +4,8 @@ import { db } from "../../db";
 import { createId } from "@paralleldrive/cuid2";
 import { authLinks } from "../../db/schema";
 import { env } from "../../env";
+import { mail } from "../../lib/mail";
+import nodemailer from "nodemailer";
 
 export const sendAuthLink = new Elysia().post(
   "/authenticate",
@@ -32,8 +34,14 @@ export const sendAuthLink = new Elysia().post(
     authLink.searchParams.set("token", token);
     authLink.searchParams.set("redirectTo", env.AUTH_REDIRECT_URL);
 
-    // TODO: send e-mail
-    console.log(authLink);
+    const info = await mail.sendMail({
+      from: "Pizzashop <hi@pizzashop.com>",
+      to: email,
+      subject: "Your magic link",
+      text: `Use the following link to authenticate on Pizzashop: ${authLink.toString()}`,
+    });
+
+    console.log(nodemailer.getTestMessageUrl(info));
   },
   {
     body: z.object({
