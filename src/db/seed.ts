@@ -1,11 +1,15 @@
 import { fakerPT_BR as faker } from "@faker-js/faker";
 import { db } from "./index";
-import { restaurants, users } from "./schema";
+import { authLinks, orderItems, orders, products, restaurants, users } from "./schema";
 
 async function seed() {
   /**
    * Reset database
    */
+  await db.delete(orderItems);
+  await db.delete(orders);
+  await db.delete(products);
+  await db.delete(authLinks);
   await db.delete(restaurants);
   await db.delete(users);
 
@@ -21,7 +25,7 @@ async function seed() {
     role: "customer" as const,
   }));
 
-  await db.insert(users).values(customersToInsert);
+  const customers = await db.insert(users).values(customersToInsert).returning();
 
   console.log("Created customers!");
 
@@ -43,13 +47,70 @@ async function seed() {
   /**
    * Create restaurant
    */
-  await db.insert(restaurants).values({
-    name: faker.company.name(),
-    description: faker.lorem.paragraph(),
-    managerdId: manager.id,
-  });
+  const [restaurant] = await db
+    .insert(restaurants)
+    .values({
+      name: faker.company.name(),
+      description: faker.lorem.paragraph(),
+      managerdId: manager.id,
+    })
+    .returning();
 
   console.log("Created restaurant!");
+
+  /**
+   * Create products
+   */
+  const productsToInsert = Array.from({ length: 10 }).map(() => ({
+    name: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    priceInCents: Number(faker.commerce.price({ min: 1000, max: 4000, dec: 0 })),
+    restaurantId: restaurant.id,
+  }));
+
+  const createdProducts = await db.insert(products).values(productsToInsert).returning();
+
+  console.log("Created products!");
+
+  /**
+   * Create orders with order items
+   */
+  const orderStatuses = ["pending", "processing", "deliverying", "delivered", "canceled"] as const;
+
+  for (let i = 0; i < 200; i++) {
+    const customer = faker.helpers.arrayElement(customers);
+    const status = faker.helpers.arrayElement(orderStatuses);
+    const selectedProducts = faker.helpers.arrayElements(createdProducts, {
+      min: 1,
+      max: 4,
+    });
+
+    const totalInCents = selectedProducts.reduce(
+      (sum, product) => sum + product.priceInCents,
+      0,
+    );
+
+    const [order] = await db
+      .insert(orders)
+      .values({
+        restaurantId: restaurant.id,
+        customerId: customer.id,
+        status,
+        totalInCents,
+        createdAt: faker.date.recent({ days: 40 }),
+      })
+      .returning();
+
+    await db.insert(orderItems).values(
+      selectedProducts.map((product) => ({
+        orderId: order.id,
+        productId: product.id,
+        priceInCents: product.priceInCents,
+      })),
+    );
+  }
+
+  console.log("Created orders!");
 
   console.log("Database seeded successfully!");
 }
