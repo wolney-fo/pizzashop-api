@@ -29,6 +29,13 @@
       "when": 1780082523432,
       "tag": "0003_condemned_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1780185090520,
+      "tag": "0004_late_sersi",
+      "breakpoints": true
     }
   ]
 }
