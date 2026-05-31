@@ -85,8 +85,14 @@ async function seed() {
       max: 4,
     });
 
-    const totalInCents = selectedProducts.reduce(
-      (sum, product) => sum + product.priceInCents,
+    const itemsData = selectedProducts.map((product) => ({
+      productId: product.id,
+      priceInCents: product.priceInCents,
+      quantity: faker.number.int({ min: 1, max: 3 }),
+    }));
+
+    const totalInCents = itemsData.reduce(
+      (sum, item) => sum + item.priceInCents * item.quantity,
       0,
     );
 
@@ -102,10 +108,11 @@ async function seed() {
       .returning();
 
     await db.insert(orderItems).values(
-      selectedProducts.map((product) => ({
+      itemsData.map((item) => ({
         orderId: order.id,
-        productId: product.id,
-        priceInCents: product.priceInCents,
+        productId: item.productId,
+        priceInCents: item.priceInCents,
+        quantity: item.quantity,
       })),
     );
   }

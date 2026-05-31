@@ -36,6 +36,13 @@
       "when": 1780185090520,
       "tag": "0004_late_sersi",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1780185981899,
+      "tag": "0005_awesome_sleepwalker",
+      "breakpoints": true
     }
   ]
 }
