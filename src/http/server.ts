@@ -10,6 +10,7 @@ import { approveOrder } from "./routes/approve-order";
 import { cancelOrder } from "./routes/cancel-order";
 import { deliverOrder } from "./routes/deliver-order";
 import { dispatchOrder } from "./routes/dispatch-order";
+import { listOrders } from "./routes/list-orders";
 
 const app = new Elysia()
   .use(createRestaurant)
@@ -22,7 +23,8 @@ const app = new Elysia()
   .use(approveOrder)
   .use(cancelOrder)
   .use(deliverOrder)
-  .use(dispatchOrder);
+  .use(dispatchOrder)
+  .use(listOrders);
 
 app.listen(3333, () => {
   console.log("HTTP Server running");
