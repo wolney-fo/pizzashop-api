@@ -7,6 +7,9 @@ import { getUserProfile } from "./routes/get-user-profile";
 import { getManagedRestaurant } from "./routes/get-managed-restaurant";
 import { getOrderDetails } from "./routes/get-order-details";
 import { approveOrder } from "./routes/approve-order";
+import { cancelOrder } from "./routes/cancel-order";
+import { deliverOrder } from "./routes/deliver-order";
+import { dispatchOrder } from "./routes/dispatch-order";
 
 const app = new Elysia()
   .use(createRestaurant)
@@ -16,7 +19,10 @@ const app = new Elysia()
   .use(getUserProfile)
   .use(getManagedRestaurant)
   .use(getOrderDetails)
-  .use(approveOrder);
+  .use(approveOrder)
+  .use(cancelOrder)
+  .use(deliverOrder)
+  .use(dispatchOrder);
 
 app.listen(3333, () => {
   console.log("HTTP Server running");
