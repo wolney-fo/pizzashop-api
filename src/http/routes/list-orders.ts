@@ -5,7 +5,7 @@ import { UnauthorizedError } from "../errors/unauthorized-error";
 import { z } from "zod";
 import { createSelectSchema } from "drizzle-zod";
 import { orders, orderStatusEnum, users } from "../../db/schema";
-import { and, count, eq, getTableColumns, ilike } from "drizzle-orm";
+import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 
 export const listOrders = new Elysia().use(auth).get(
   "/orders",
@@ -43,7 +43,19 @@ export const listOrders = new Elysia().use(auth).get(
         .select()
         .from(baseQuery.as("baseQuery"))
         .offset(pageIndex * 10)
-        .limit(10),
+        .limit(10)
+        .orderBy((fields) => {
+          return [
+            sql`CASE ${fields.status}
+                WHEN 'pending' THEN 1
+                WHEN 'processing' THEN 2
+                WHEN 'deliverying' THEN 3
+                WHEN 'delivered' THEN 4
+                WHEN 'canceled' THEN 99
+              END`,
+            desc(fields.createdAt),
+          ];
+        }),
     ]);
 
     const amountOfOrders = amountOfOrdersQuery[0].count;
