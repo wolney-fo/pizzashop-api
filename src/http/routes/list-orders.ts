@@ -18,10 +18,14 @@ export const listOrders = new Elysia().use(auth).get(
 
     const { customerName, orderId, status, pageIndex } = query;
 
-    const orderTableColumns = getTableColumns(orders);
-
     const baseQuery = db
-      .select(orderTableColumns)
+      .select({
+        orderId: orders.id,
+        createdAt: orders.createdAt,
+        status: orders.status,
+        total: orders.totalInCents,
+        customerName: users.name,
+      })
       .from(orders)
       .innerJoin(users, eq(users.id, orders.customerId))
       .where(
