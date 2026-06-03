@@ -1,6 +1,13 @@
 import { fakerPT_BR as faker } from "@faker-js/faker";
 import { db } from "./index";
-import { authLinks, orderItems, orders, products, restaurants, users } from "./schema";
+import {
+  authLinks,
+  orderItems,
+  orders,
+  products,
+  restaurants,
+  users,
+} from "./schema";
 
 async function seed() {
   /**
@@ -25,7 +32,10 @@ async function seed() {
     role: "customer" as const,
   }));
 
-  const customers = await db.insert(users).values(customersToInsert).returning();
+  const customers = await db
+    .insert(users)
+    .values(customersToInsert)
+    .returning();
 
   console.log("Created customers!");
 
@@ -64,18 +74,29 @@ async function seed() {
   const productsToInsert = Array.from({ length: 10 }).map(() => ({
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    priceInCents: Number(faker.commerce.price({ min: 1000, max: 4000, dec: 0 })),
+    priceInCents: Number(
+      faker.commerce.price({ min: 1000, max: 4000, dec: 0 }),
+    ),
     restaurantId: restaurant.id,
   }));
 
-  const createdProducts = await db.insert(products).values(productsToInsert).returning();
+  const createdProducts = await db
+    .insert(products)
+    .values(productsToInsert)
+    .returning();
 
   console.log("Created products!");
 
   /**
    * Create orders with order items
    */
-  const orderStatuses = ["pending", "processing", "deliverying", "delivered", "canceled"] as const;
+  const orderStatuses = [
+    "pending",
+    "processing",
+    "deliverying",
+    "delivered",
+    "canceled",
+  ] as const;
 
   for (let i = 0; i < 200; i++) {
     const customer = faker.helpers.arrayElement(customers);
@@ -103,7 +124,7 @@ async function seed() {
         customerId: customer.id,
         status,
         totalInCents,
-        createdAt: faker.date.recent({ days: 40 }),
+        createdAt: faker.date.recent({ days: 90 }),
       })
       .returning();
 
