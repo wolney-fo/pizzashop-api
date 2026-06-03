@@ -14,6 +14,7 @@ import { listOrders } from "./routes/list-orders";
 import { getMontghRevenue } from "./routes/get-month-revenue";
 import { getDayOrdersAmount } from "./routes/get-day-orders-amount";
 import { getMonthOrdersAmount } from "./routes/get-month-orders-amount";
+import { getMonthCanceledOrdersAmount } from "./routes/get-month-canceled-orders-amount";
 
 const app = new Elysia()
   .use(createRestaurant)
@@ -30,7 +31,8 @@ const app = new Elysia()
   .use(listOrders)
   .use(getMontghRevenue)
   .use(getDayOrdersAmount)
-  .use(getMonthOrdersAmount);
+  .use(getMonthOrdersAmount)
+  .use(getMonthCanceledOrdersAmount);
 
 app.listen(3333, () => {
   console.log("HTTP Server running");
