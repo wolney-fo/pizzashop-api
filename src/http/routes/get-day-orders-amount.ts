@@ -8,7 +8,7 @@ import { and, count, eq, gte, sql } from "drizzle-orm";
 
 export const getDayOrdersAmount = new Elysia()
   .use(auth)
-  .get("/metricts/day-orders-amount", async ({ getCurrentUser }) => {
+  .get("/metrics/day-orders-amount", async ({ getCurrentUser }) => {
     const { restaurantId } = await getCurrentUser();
 
     if (!restaurantId) {
